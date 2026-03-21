@@ -1,136 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>CKRPRO TOOL</title>
-    <style>
-        * { box-sizing: border-box; user-select: none; outline: none; -webkit-tap-highlight-color: transparent; }
-        body {
-            background: #05070a;
-            background-image: radial-gradient(circle at 50% -20%, #1a202c, #05070a);
-            font-family: -apple-system, sans-serif;
-            margin: 0; display: flex; justify-content: center; align-items: center; height: 100vh; color: white; overflow: hidden;
-        }
-        .container {
-            width: 90%; max-width: 360px;
-            background: rgba(10, 15, 25, 0.85);
-            backdrop-filter: blur(50px); -webkit-backdrop-filter: blur(50px);
-            border-radius: 40px; border: 1px solid rgba(255, 255, 255, 0.05);
-            padding: 35px 22px; box-shadow: 0 40px 100px rgba(0,0,0,0.8);
-        }
-        .banner { text-align: center; font-size: 10px; letter-spacing: 5px; color: #0a84ff; font-weight: 900; margin-bottom: 5px; text-transform: uppercase; }
-        .title { text-align: center; font-size: 24px; font-weight: 200; margin-bottom: 30px; text-transform: uppercase; }
-        .group { margin-bottom: 15px; }
-        label { display: block; font-size: 10px; opacity: 0.4; margin-bottom: 8px; margin-left: 12px; text-transform: uppercase; }
-        .input-box, .color-selector {
-            width: 100%; padding: 16px 20px; background: rgba(0, 0, 0, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 20px; color: white; font-size: 14px;
-        }
-        .color-selector { display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        button {
-            width: 100%; padding: 18px; background: #ffffff; border: none; border-radius: 22px;
-            color: #000; font-weight: 700; font-size: 16px; margin-top: 10px; cursor: pointer;
-        }
-        button:active { transform: scale(0.97); }
-        #term-container {
-            margin-top: 25px; background: rgba(0, 0, 0, 0.6); border-radius: 18px; padding: 12px;
-            height: 70px; overflow: hidden; pointer-events: none; border: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex; flex-direction: column-reverse;
-        }
-        .term-line { font-family: monospace; font-size: 10px; text-align: center; margin: 2px 0; word-break: break-all; }
-        .modal-overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.92); display: none; justify-content: center; align-items: center; z-index: 1000; backdrop-filter: blur(15px);
-        }
-        .modal-content { width: 85%; max-width: 300px; background: #1c1c1e; border-radius: 35px; max-height: 55vh; overflow-y: auto; }
-        .color-option { padding: 20px; text-align: center; border-bottom: 1px solid rgba(255,255,255,0.05); font-size: 15px; }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKRPRO TOOL</title>
+
+<style>
+* {
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:-apple-system, sans-serif;
+}
+
+body {
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:linear-gradient(135deg,#eaf2ff,#ffffff);
+}
+
+.container {
+    width:90%;
+    max-width:360px;
+    padding:25px;
+    border-radius:35px;
+
+    background:rgba(255,255,255,0.25);
+    backdrop-filter:blur(25px);
+    -webkit-backdrop-filter:blur(25px);
+
+    border:1px solid rgba(255,255,255,0.4);
+    box-shadow:0 20px 60px rgba(0,0,0,0.15);
+}
+
+.title {
+    text-align:center;
+    font-size:22px;
+    font-weight:600;
+    margin-bottom:20px;
+    color:#111;
+}
+
+.input {
+    width:100%;
+    padding:15px;
+    border:none;
+    border-radius:18px;
+    margin-bottom:12px;
+
+    background:rgba(255,255,255,0.5);
+    backdrop-filter:blur(10px);
+
+    font-size:14px;
+}
+
+select {
+    width:100%;
+    padding:15px;
+    border-radius:18px;
+    border:none;
+    margin-bottom:12px;
+    background:rgba(255,255,255,0.5);
+}
+
+button {
+    width:100%;
+    padding:16px;
+    border:none;
+    border-radius:20px;
+    font-size:15px;
+    font-weight:600;
+
+    background:#000;
+    color:#fff;
+
+    transition:0.2s;
+}
+
+button:active {
+    transform:scale(0.96);
+}
+
+#log {
+    margin-top:15px;
+    font-size:12px;
+    text-align:center;
+    color:#333;
+}
+</style>
 </head>
+
 <body>
 
 <div class="container">
-    <div class="banner">CKRPRO TOOL</div>
-    <div class="title"> </div>
-    <div class="group"><label>Access Token</label><input type="text" id="token" class="input-box" placeholder="Paste Token"></div>
-    <div class="group"><label>Color Theme</label><div class="color-selector" id="openBtn"><span id="selected-text">🌸 PINK</span><span>▼</span></div></div>
-    <div class="group"><label>Bio Message</label><input type="text" id="bio" class="input-box" placeholder="Enter message"></div>
-    <button id="mainBtn">Update Bio</button>
-    <div id="term-container"><div id="terminal"><div class="term-line" style="color: #30d158;">> SYSTEM READY</div></div></div>
-</div>
 
-<div class="modal-overlay" id="modal">
-    <div class="modal-content">
-        <div class="color-option" data-val="RED">🔴 RED</div><div class="color-option" data-val="GREEN">🟢 GREEN</div><div class="color-option" data-val="BLUE">🔵 BLUE</div>
-        <div class="color-option" data-val="PURPLE">🟣 PURPLE</div><div class="color-option" data-val="YELLOW">🟡 YELLOW</div><div class="color-option" data-val="ORANGE">🟠 ORANGE</div>
-        <div class="color-option" data-val="PINK">🌸 PINK</div><div class="color-option" data-val="CYAN">🌊 CYAN</div><div class="color-option" data-val="BLACK">⚫ BLACK</div>
-        <div class="color-option" data-val="WHITE">⚪ WHITE</div><div class="color-option" data-val="GREY">⚙️ GREY</div>
-    </div>
+<div class="title">CKRPRO TOOL</div>
+
+<input id="token" class="input" placeholder="Access Token">
+<input id="bio" class="input" placeholder="Bio Message">
+
+<select id="color">
+<option value="RED">🔴 RED</option>
+<option value="GREEN">🟢 GREEN</option>
+<option value="BLUE">🔵 BLUE</option>
+<option value="PINK">🌸 PINK</option>
+<option value="YELLOW">🟡 YELLOW</option>
+</select>
+
+<button onclick="run()">Update Bio</button>
+
+<div id="log">Ready...</div>
+
 </div>
 
 <script>
-    let activeColor = "PINK";
-    const modal = document.getElementById('modal');
-    const terminal = document.getElementById('terminal');
+function log(msg,color="black"){
+    let el=document.getElementById("log");
+    el.style.color=color;
+    el.innerText=msg;
+}
 
-    function log(msg, color = "#30d158") {
-        const div = document.createElement('div');
-        div.className = "term-line";
-        div.style.color = color;
-        div.innerText = `> ${msg.toUpperCase()}`;
-        terminal.prepend(div);
+async function run(){
+    let token=document.getElementById("token").value.trim();
+    let bio=document.getElementById("bio").value.trim();
+    let color=document.getElementById("color").value;
+
+    if(!token || !bio){
+        log("Fill all fields","red");
+        return;
     }
 
-    document.getElementById('openBtn').onclick = () => modal.style.display = 'flex';
-    window.onclick = (e) => { if (e.target == modal) modal.style.display = "none"; }
+    log("Updating...","blue");
 
-    document.querySelectorAll('.color-option').forEach(item => {
-        item.onclick = () => {
-            activeColor = item.getAttribute('data-val');
-            document.getElementById('selected-text').innerText = item.innerText;
-            modal.style.display = "none";
+    let url=`https://bio.up.railway.app/bio?bio=${encodeURIComponent(bio)}&colour=${color}&access=${token}`;
+
+    try{
+        // FAST DIRECT TRY
+        let res=await fetch(url);
+        let text=await res.text();
+
+        if(text.toLowerCase().includes("success")){
+            log("Success ✅","green");
+        }else{
+            log(text,"red");
         }
-    });
 
-    document.getElementById('mainBtn').onclick = async function() {
-        const token = document.getElementById('token').value.trim();
-        const bioText = document.getElementById('bio').value.trim();
+    }catch(e){
 
-        if(!token || !bioText) { log("DATA MISSING", "#ff453a"); return; }
+        log("Retrying...","orange");
 
-        this.innerText = "WAIT...";
-        log("TRYING SECURE CONNECTION...");
+        try{
+            // FALLBACK (ONLY IF NEEDED)
+            let res2=await fetch("https://corsproxy.io/?"+encodeURIComponent(url));
+            let text2=await res2.text();
 
-        const targetUrl = `https://bio.up.railway.app/bio?bio=${encodeURIComponent(bioText)}&colour=${activeColor}&access=${token}`;
-        
-        // Direct Fetch without JSON parsing to see raw response
-        try {
-            const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}&timestamp=${Date.now()}`);
-            const data = await res.json();
-            const rawOutput = data.contents;
-
-            if (rawOutput) {
-                // If the response text contains "Success", it's good. 
-                // Otherwise, it will print exactly what the API said (e.g. "Invalid Access Token")
-                const color = rawOutput.toLowerCase().includes("success") ? "#32d74b" : "#ff453a";
-                log(rawOutput, color);
-            } else {
-                log("EMPTY RESPONSE FROM API", "#ff453a");
+            if(text2.toLowerCase().includes("success")){
+                log("Success ✅","green");
+            }else{
+                log("Failed ❌","red");
             }
-        } catch (e) {
-            log("CONNECTION ERROR: RETRYING...", "#ff9f0a");
-            // Secondary Proxy Fallback
-            try {
-                const res2 = await fetch(`https://corsproxy.io/?${encodeURIComponent(targetUrl)}`);
-                const text = await res2.text();
-                log(text || "FAILED AGAIN", text.toLowerCase().includes("success") ? "#32d74b" : "#ff453a");
-            } catch(e2) {
-                log("ALL PROXIES BLOCKED", "#ff453a");
-            }
-        } finally {
-            this.innerText = "Update Bio";
+
+        }catch(e2){
+            log("Network Error ❌","red");
         }
-    };
+    }
+}
 </script>
+
 </body>
 </html>
