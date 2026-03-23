@@ -3,21 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CKRPRO BIO - CKR BRAND V1</title>
+    <title>CKRPRO BIO - FF TOOL</title>
     <style>
         :root {
-            --bg: #121214;
-            --card-bg: rgba(30, 30, 35, 0.7);
+            --bg: #0a0a0c;
+            --card: rgba(25, 25, 28, 0.95);
             --blue: #007aff;
-            --green: #34c759;
-            --red: #ff3b30;
+            --green: #32d74b;
+            --red: #ff453a;
             --text: #ffffff;
-            --input-bg: rgba(255, 255, 255, 0.05);
         }
 
         body {
             background-color: var(--bg);
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            font-family: -apple-system, system-ui, sans-serif;
             display: flex; flex-direction: column; align-items: center;
             padding: 20px; margin: 0; color: var(--text);
         }
@@ -25,73 +24,50 @@
         .container { width: 100%; max-width: 420px; }
 
         .header {
-            text-align: center; padding: 35px 20px;
-            background: linear-gradient(135deg, #1e1e1e, #007aff);
-            border-radius: 28px; color: white; margin-bottom: 25px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            text-align: center; padding: 30px 20px;
+            background: linear-gradient(135deg, #1c1c1e, #007aff);
+            border-radius: 24px; margin-bottom: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        .header h1 { margin: 0; font-size: 28px; font-weight: 800; letter-spacing: -1px; }
-        .header p { margin: 5px 0 0 0; font-size: 13px; opacity: 0.7; }
+        .header h1 { margin: 0; font-size: 26px; font-weight: 800; }
+        .header p { margin: 5px 0 0 0; font-size: 12px; opacity: 0.6; }
 
         .card {
-            background: var(--card-bg);
+            background: var(--card);
             backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 24px;
-            padding: 24px;
-            margin-bottom: 20px;
-            border: none;
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            border-radius: 22px;
+            padding: 22px;
+            margin-bottom: 18px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
 
-        h2 { font-size: 15px; font-weight: 700; margin: 0 0 18px 0; color: #a1a1a6; display: flex; align-items: center; }
-        h2::before { content: ''; width: 4px; height: 16px; background: var(--blue); margin-right: 12px; border-radius: 4px; }
+        h2 { font-size: 14px; margin: 0 0 15px 0; color: #8e8e93; display: flex; align-items: center; }
+        h2::before { content: ''; width: 3px; height: 14px; background: var(--blue); margin-right: 10px; border-radius: 2px; }
 
-        .color-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .color-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
         .color-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: none;
-            padding: 14px;
-            border-radius: 16px;
-            font-weight: 800;
-            font-size: 13px;
-            cursor: pointer;
-            text-align: center;
-            color: #fff;
-            transition: 0.2s;
+            background: rgba(255,255,255,0.08); border: none; padding: 12px;
+            border-radius: 12px; font-weight: 800; font-size: 12px;
+            cursor: pointer; color: #fff;
         }
-        .color-btn:active { transform: scale(0.92); background: rgba(255,255,255,0.1); }
 
         input {
             width: 100%; padding: 16px; margin-bottom: 12px;
-            border-radius: 16px; border: none;
-            font-size: 15px; outline: none; box-sizing: border-box;
-            background: var(--input-bg);
-            color: white;
-            transition: 0.3s;
+            border-radius: 16px; border: none; font-size: 14px;
+            background: rgba(255,255,255,0.06); color: white; outline: none;
         }
-        input:focus { background: rgba(255,255,255,0.1); }
 
         .btn {
             width: 100%; padding: 18px; background: var(--blue);
-            color: white; border: none; border-radius: 18px;
-            font-size: 16px; font-weight: 700; cursor: pointer;
-            box-shadow: 0 8px 20px rgba(0,122,255,0.3);
-            transition: 0.3s;
+            color: white; border: none; border-radius: 16px;
+            font-size: 15px; font-weight: 700; cursor: pointer;
         }
-        .btn:active { transform: scale(0.96); opacity: 0.9; }
 
         .terminal {
-            background: #000;
-            border-radius: 18px;
-            padding: 16px;
-            margin-top: 15px;
-            min-height: 60px;
-            font-family: 'SF Mono', monospace;
-            font-size: 11px;
-            color: #d1d1d6;
+            background: #000; border-radius: 16px; padding: 16px;
+            margin-top: 12px; min-height: 55px;
+            font-family: 'SF Mono', monospace; font-size: 11px; color: #a1a1a6;
             word-break: break-all;
-            box-shadow: inset 0 2px 10px rgba(0,0,0,0.5);
         }
 
         .log-ok { color: var(--green); }
@@ -99,9 +75,8 @@
         .log-wait { color: #636366; font-style: italic; }
 
         .toast {
-            position: fixed; bottom: 40px; background: #fff;
-            color: #000; padding: 12px 25px; border-radius: 50px;
-            display: none; font-size: 14px; font-weight: 700; z-index: 1000;
+            position: fixed; bottom: 30px; background: #fff; color: #000;
+            padding: 10px 20px; border-radius: 40px; display: none; font-size: 13px; font-weight: 700;
         }
     </style>
 </head>
@@ -112,7 +87,7 @@
     <div class="container">
         <div class="header">
             <h1>CKRPRO BIO</h1>
-            <p>FREE FIRE LONG BIO CHANGER</p>
+            <p>FREE FIRE TOOL </p>
         </div>
 
         <div class="card">
@@ -128,20 +103,18 @@
         </div>
 
         <div class="card">
-            <h2>1. Extract JWT</h2>
+            <h2>1. Get JWT Token</h2>
             <input type="text" id="acc" placeholder="Paste Access Token">
             <button class="btn" onclick="getJWT()">Generate JWT</button>
-            <div class="terminal" id="t1"><div class="log-wait"
-            </div></div>
+            <div class="terminal" id="t1"><div class="log-wait">> Ready...</div></div>
         </div>
 
         <div class="card">
-            <h2>2. Update Bio (JWT)</h2>
+            <h2>2. Apply Bio</h2>
             <input type="text" id="jBio" placeholder="Bio Text with Colors">
-            <input type="text" id="jToken" placeholder="JWT Token (Auto-fills)">
-            <button class="btn" onclick="bioJWT()">Apply Bio</button>
-            <div class="terminal" id="t3"><div class="log-wait"
-            </div></div>
+            <input type="text" id="jToken" placeholder="JWT (Auto-filled)">
+            <button class="btn" onclick="bioJWT()">Update Now</button>
+            <div class="terminal" id="t3"><div class="log-wait">> Waiting for JWT...</div></div>
         </div>
     </div>
 
@@ -157,50 +130,60 @@
             document.getElementById(id).innerHTML = `<div class="log-${type}">> ${msg}</div>`;
         }
 
-        // --- NEW MULTI-PROXY LOGIC ---
-        async function fetchWithFallback(url) {
-            // Try Proxy 1 (AllOrigins)
-            try {
-                const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
-                const data = await res.json();
-                if (data.contents) return data.contents;
-            } catch (e) { console.log("Proxy 1 Down"); }
+        // --- ULTRA STABLE PROXY ENGINE ---
+        async function universalFetch(targetUrl) {
+            const proxies = [
+                `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`,
+                `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
+                `https://thingproxy.freeboard.io/fetch/${targetUrl}`
+            ];
 
-            // Try Proxy 2 (CorsProxy.io)
-            try {
-                const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
-                const text = await res.text();
-                if (text && !text.includes("error")) return text;
-            } catch (e) { console.log("Proxy 2 Down"); }
-
-            throw new Error("Connection Failed");
+            for (let proxy of proxies) {
+                try {
+                    const response = await fetch(proxy);
+                    if (!response.ok) continue;
+                    
+                    const data = await response.text();
+                    // Handle AllOrigins JSON wrapping
+                    if (proxy.includes("allorigins")) {
+                        const json = JSON.parse(data);
+                        return json.contents;
+                    }
+                    return data;
+                } catch (err) {
+                    console.log("Proxy failed, trying next...");
+                }
+            }
+            throw new Error("All proxies failed");
         }
 
         async function getJWT() {
             const token = document.getElementById('acc').value.trim();
             if(!token) return log('t1', 'Error: Token missing!', 'err');
-            log('t1', 'Extracting JWT...', 'wait');
+            log('t1', 'Waking up Render (10-20s)...', 'wait');
+            
             try {
-                const target = `https://access-token-to-jwt-token.onrender.com/rizer?access_token=${encodeURIComponent(token)}`;
-                const contents = await fetchWithFallback(target);
-                const data = JSON.parse(contents);
+                const target = `https://access-token-to-jwt-token.onrender.com/rizer?access_token=${token}`;
+                const result = await universalFetch(target);
+                const data = JSON.parse(result);
                 if(data.success) {
-                    log('t1', data.jwt, 'ok');
+                    log('t1', 'JWT Created!', 'ok');
                     document.getElementById('jToken').value = data.jwt;
-                } else { log('t1', 'Failed: ' + (data.error || 'Invalid Token'), 'err'); }
-            } catch (e) { log('t1', 'Network Error! Please retry.', 'err'); }
+                } else { log('t1', 'Failed: ' + (data.error || 'Invalid'), 'err'); }
+            } catch (e) { log('t1', 'Network busy, try again in 5s.', 'err'); }
         }
 
         async function bioJWT() {
             const bio = document.getElementById('jBio').value;
             const jwt = document.getElementById('jToken').value.trim();
-            if(!jwt) return log('t3', 'Error: JWT Required!', 'err');
+            if(!jwt) return log('t3', 'Error: Need JWT first!', 'err');
             log('t3', 'Updating Bio...', 'wait');
+
             try {
-                const target = `https://long-bio-api.onrender.com/bio_upload?bio=${encodeURIComponent(bio)}&jwt=${encodeURIComponent(jwt)}`;
-                const contents = await fetchWithFallback(target);
-                log('t3', contents || 'Success!', 'ok');
-            } catch (e) { log('t3', 'Connection Failed!', 'err'); }
+                const target = `https://long-bio-api.onrender.com/bio_upload?bio=${encodeURIComponent(bio)}&jwt=${jwt}`;
+                const result = await universalFetch(target);
+                log('t3', result || 'Bio Updated!', 'ok');
+            } catch (e) { log('t3', 'Failed to connect. Retry.', 'err'); }
         }
     </script>
 </body>
