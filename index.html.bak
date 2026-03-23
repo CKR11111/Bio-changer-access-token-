@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CKRPRO LONG BIO - Ultimate Edition</title>
+    <style>
+        :root {
+            --ios-bg: #f2f2f7;
+            --white: #ffffff;
+            --blue: #007aff;
+            --green: #34c759;
+            --red: #ff3b30;
+            --terminal-bg: #1c1c1e;
+        }
+
+        body {
+            background-color: var(--ios-bg);
+            font-family: -apple-system, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        .container { width: 100%; max-width: 440px; }
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 22px;
+            padding: 22px;
+            margin-bottom: 20px;
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 8px 30px rgba(0,0,0,0.05);
+        }
+
+        /* Color Codes Grid */
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .color-btn {
+            background: white;
+            border: 1px solid #d1d1d6;
+            padding: 12px 5px;
+            border-radius: 12px;
+            font-weight: 800;
+            font-size: 13px;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+        }
+
+        .color-btn:active { transform: scale(0.9); }
+
+        h2 { font-size: 16px; font-weight: 700; margin: 0 0 15px 0; color: #333; }
+
+        input {
+            width: 100%; padding: 14px; margin-bottom: 12px;
+            border-radius: 12px; border: 1px solid #d1d1d6;
+            font-size: 15px; outline: none; box-sizing: border-box;
+        }
+
+        .btn {
+            width: 100%; padding: 15px; background: var(--blue);
+            color: white; border: none; border-radius: 14px;
+            font-size: 16px; font-weight: 600; cursor: pointer;
+        }
+
+        /* Terminal Boxes */
+        .terminal {
+            background: var(--terminal-bg);
+            border-radius: 14px;
+            padding: 15px;
+            margin-top: 12px;
+            min-height: 50px;
+            border: 1px solid #3a3a3c;
+            font-family: 'SF Mono', monospace;
+            font-size: 12px;
+        }
+
+        .log-ok { color: var(--green); word-break: break-all; }
+        .log-err { color: var(--red); }
+        .log-wait { color: #8e8e93; font-style: italic; }
+
+        .toast {
+            position: fixed; top: 20px; background: #333; color: white;
+            padding: 10px 20px; border-radius: 20px; display: none; z-index: 100;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="toast" class="toast">Code Copied!</div>
+
+    <h1 style="font-weight: 800; margin-bottom: 25px;">CKRPRO LONG BIO</h1>
+
+    <div class="container">
+        
+        <div class="card">
+            <h2>Tap to Copy Color Code</h2>
+            <div class="color-grid">
+                <div class="color-btn" onclick="copy('[FFFF00]')" style="color: #D4AF37;">[FFFF00]</div>
+                <div class="color-btn" onclick="copy('[FF0000]')" style="color: #FF0000;">[FF0000]</div>
+                <div class="color-btn" onclick="copy('[00FF00]')" style="color: #00FF00;">[00FF00]</div>
+                <div class="color-btn" onclick="copy('[0000FF]')" style="color: #0000FF;">[0000FF]</div>
+                <div class="color-btn" onclick="copy('[FF00FF]')" style="color: #FF00FF;">[FF00FF]</div>
+                <div class="color-btn" onclick="copy('[FFA500]')" style="color: #FFA500;">[FFA500]</div>
+                <div class="color-btn" onclick="copy('[FFFFFF]')" style="color: #888888;">[FFFFFF]</div>
+                <div class="color-btn" onclick="copy('[000000]')" style="color: #000000;">[000000]</div>
+                <div class="color-btn" onclick="copy('[b][c]')" style="color: #555;">[b][c]</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2>1. Extract JWT Token</h2>
+            <input type="text" id="acc" placeholder="Paste Access Token">
+            <button class="btn" onclick="getJWT()">Generate JWT</button>
+            <div class="terminal" id="t1"><div class="log-wait">> Ready...</div></div>
+        </div>
+
+        <div class="card">
+            <h2>2. Bio Changer (ID/Password)</h2>
+            <input type="text" id="gBio" placeholder="Bio Text (Paste code here)">
+            <input type="text" id="gUid" placeholder="UID">
+            <input type="text" id="gPass" placeholder="Password">
+            <button class="btn" onclick="bioGuest()">Update Bio</button>
+            <div class="terminal" id="t2"><div class="log-wait">> Waiting for ID/Pass...</div></div>
+        </div>
+
+        <div class="card">
+            <h2>3. Bio Changer (JWT Token)</h2>
+            <input type="text" id="jBio" placeholder="Bio Text (Paste code here)">
+            <input type="text" id="jToken" placeholder="JWT Token (Auto-filled)">
+            <button class="btn" onclick="bioJWT()">Update via JWT</button>
+            <div class="terminal" id="t3"><div class="log-wait">> Waiting for JWT...</div></div>
+        </div>
+
+    </div>
+
+    <script>
+        const proxy = "https://corsproxy.io/?";
+
+        function copy(txt) {
+            navigator.clipboard.writeText(txt);
+            const toast = document.getElementById('toast');
+            toast.style.display = 'block';
+            setTimeout(() => toast.style.display = 'none', 1500);
+        }
+
+        function log(id, msg, type) {
+            document.getElementById(id).innerHTML = `<div class="log-${type}">> ${msg}</div>`;
+        }
+
+        // JWT API
+        async function getJWT() {
+            const token = document.getElementById('acc').value.trim();
+            if(!token) return log('t1', 'Enter token!', 'err');
+            log('t1', 'Extracting...', 'wait');
+            try {
+                const url = `https://access-token-to-jwt-token.onrender.com/rizer?access_token=${token}`;
+                const res = await fetch(proxy + encodeURIComponent(url));
+                const data = await res.json();
+                if(data.success) {
+                    log('t1', data.jwt, 'ok');
+                    document.getElementById('jToken').value = data.jwt;
+                } else { log('t1', 'Error: ' + data.error, 'err'); }
+            } catch (e) { log('t1', 'API Offline or CORS Block!', 'err'); }
+        }
+
+        // Bio Guest API
+        async function bioGuest() {
+            const bio = document.getElementById('gBio').value;
+            const uid = document.getElementById('gUid').value;
+            const pass = document.getElementById('gPass').value;
+            if(!uid || !pass) return log('t2', 'ID/Pass missing!', 'err');
+            log('t2', 'Updating...', 'wait');
+            try {
+                const url = `https://long-bio-api.onrender.com/bio_upload?bio=${encodeURIComponent(bio)}&uid=${uid}&pass=${pass}`;
+                const res = await fetch(proxy + encodeURIComponent(url));
+                const data = await res.text();
+                if(res.ok) log('t2', 'Bio Change Successful ✅\n' + data, 'ok');
+                else log('t2', 'Failed: ' + data, 'err');
+            } catch (e) { log('t2', 'Connection error!', 'err'); }
+        }
+
+        // Bio JWT API
+        async function bioJWT() {
+            const bio = document.getElementById('jBio').value;
+            const jwt = document.getElementById('jToken').value.trim();
+            if(!jwt) return log('t3', 'JWT missing!', 'err');
+            log('t3', 'Updating...', 'wait');
+            try {
+                const url = `https://long-bio-api.onrender.com/bio_upload?bio=${encodeURIComponent(bio)}&jwt=${jwt}`;
+                const res = await fetch(proxy + encodeURIComponent(url));
+                const data = await res.text();
+                if(res.ok) log('t3', 'Bio Change Successful ✅\n' + data, 'ok');
+                else log('t3', 'Failed: ' + data, 'err');
+            } catch (e) { log('t3', 'Request failed!', 'err'); }
+        }
+    </script>
+</body>
+</html>
