@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CKRPRO BIO - FF TOOL</title>
+    <title>CKRPRO BIO - FINAL FIXED</title>
     <style>
         :root {
             --bg: #0a0a0c;
@@ -38,6 +38,7 @@
             border-radius: 22px;
             padding: 22px;
             margin-bottom: 18px;
+            border: none;
             box-shadow: 0 8px 32px rgba(0,0,0,0.4);
         }
 
@@ -87,7 +88,7 @@
     <div class="container">
         <div class="header">
             <h1>CKRPRO BIO</h1>
-            <p>FREE FIRE TOOL </p>
+            <p>100% Fixed Connection Engine</p>
         </div>
 
         <div class="card">
@@ -111,7 +112,7 @@
 
         <div class="card">
             <h2>2. Apply Bio</h2>
-            <input type="text" id="jBio" placeholder="Bio Text with Colors">
+            <input type="text" id="jBio" placeholder="Bio Text (e.g. [FFFF00]CKRPRO)">
             <input type="text" id="jToken" placeholder="JWT (Auto-filled)">
             <button class="btn" onclick="bioJWT()">Update Now</button>
             <div class="terminal" id="t3"><div class="log-wait">> Waiting for JWT...</div></div>
@@ -130,60 +131,67 @@
             document.getElementById(id).innerHTML = `<div class="log-${type}">> ${msg}</div>`;
         }
 
-        // --- ULTRA STABLE PROXY ENGINE ---
-        async function universalFetch(targetUrl) {
-            const proxies = [
-                `https://api.allorigins.win/get?url=${encodeURIComponent(targetUrl)}`,
-                `https://corsproxy.io/?${encodeURIComponent(targetUrl)}`,
-                `https://thingproxy.freeboard.io/fetch/${targetUrl}`
-            ];
+        // --- THE ULTIMATE FETCH ENGINE (SABAI FIXED) ---
+        async function smartFetch(url) {
+            // Priority 1: AllOrigins (Most Stable)
+            try {
+                const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+                const data = await res.json();
+                if (data.contents) return data.contents;
+            } catch (e) { console.log("Proxy 1 Failed"); }
 
-            for (let proxy of proxies) {
-                try {
-                    const response = await fetch(proxy);
-                    if (!response.ok) continue;
-                    
-                    const data = await response.text();
-                    // Handle AllOrigins JSON wrapping
-                    if (proxy.includes("allorigins")) {
-                        const json = JSON.parse(data);
-                        return json.contents;
-                    }
-                    return data;
-                } catch (err) {
-                    console.log("Proxy failed, trying next...");
-                }
-            }
-            throw new Error("All proxies failed");
+            // Priority 2: CorsProxy.io
+            try {
+                const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
+                const text = await res.text();
+                if (text && !text.includes("error")) return text;
+            } catch (e) { console.log("Proxy 2 Failed"); }
+
+            // Priority 3: Direct Fetch (Sometimes works on local)
+            try {
+                const res = await fetch(url);
+                return await res.text();
+            } catch (e) { console.log("Direct Failed"); }
+
+            throw new Error("SABAI CONNECTION FAILED");
         }
 
         async function getJWT() {
             const token = document.getElementById('acc').value.trim();
             if(!token) return log('t1', 'Error: Token missing!', 'err');
-            log('t1', 'Waking up Render (10-20s)...', 'wait');
+            log('t1', 'Waking up API (10-15s)...', 'wait');
             
             try {
                 const target = `https://access-token-to-jwt-token.onrender.com/rizer?access_token=${token}`;
-                const result = await universalFetch(target);
+                const result = await smartFetch(target);
                 const data = JSON.parse(result);
                 if(data.success) {
-                    log('t1', 'JWT Created!', 'ok');
+                    log('t1', 'JWT Created Successfully!', 'ok');
                     document.getElementById('jToken').value = data.jwt;
-                } else { log('t1', 'Failed: ' + (data.error || 'Invalid'), 'err'); }
-            } catch (e) { log('t1', 'Network busy, try again in 5s.', 'err'); }
+                } else { log('t1', 'Failed: ' + (data.error || 'Invalid Token'), 'err'); }
+            } catch (e) { log('t1', 'Connection Failed! Try once more.', 'err'); }
         }
 
         async function bioJWT() {
             const bio = document.getElementById('jBio').value;
             const jwt = document.getElementById('jToken').value.trim();
-            if(!jwt) return log('t3', 'Error: Need JWT first!', 'err');
-            log('t3', 'Updating Bio...', 'wait');
+            if(!jwt) return log('t3', 'Error: Paste JWT first!', 'err');
+            log('t3', 'Updating Bio... Please wait.', 'wait');
 
             try {
+                // Bio API ko correct link with proper encoding
                 const target = `https://long-bio-api.onrender.com/bio_upload?bio=${encodeURIComponent(bio)}&jwt=${jwt}`;
-                const result = await universalFetch(target);
-                log('t3', result || 'Bio Updated!', 'ok');
-            } catch (e) { log('t3', 'Failed to connect. Retry.', 'err'); }
+                const result = await smartFetch(target);
+                
+                // Response check
+                if(result.includes("Success") || result.includes("Updated")) {
+                    log('t3', 'SUCCESS: Bio Changed!', 'ok');
+                } else {
+                    log('t3', result || 'Connection OK (Check Game)', 'ok');
+                }
+            } catch (e) { 
+                log('t3', 'FAILED: Server down or JWT expired.', 'err'); 
+            }
         }
     </script>
 </body>
