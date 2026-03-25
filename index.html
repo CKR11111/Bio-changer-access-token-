@@ -1,198 +1,356 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CKRPRO BIO - FINAL FIXED</title>
-    <style>
-        :root {
-            --bg: #0a0a0c;
-            --card: rgba(25, 25, 28, 0.95);
-            --blue: #007aff;
-            --green: #32d74b;
-            --red: #ff453a;
-            --text: #ffffff;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKRPRO BIO ULTRA</title>
 
-        body {
-            background-color: var(--bg);
-            font-family: -apple-system, system-ui, sans-serif;
-            display: flex; flex-direction: column; align-items: center;
-            padding: 20px; margin: 0; color: var(--text);
-        }
+<style>
+:root{
+--bg:#0a0a0c;
+--card:rgba(25,25,28,0.95);
+--blue:#007aff;
+--green:#32d74b;
+--red:#ff453a;
+--text:#fff;
+}
 
-        .container { width: 100%; max-width: 420px; }
+body{
+background:var(--bg);
+font-family:-apple-system,sans-serif;
+display:flex;
+justify-content:center;
+padding:20px;
+margin:0;
+color:var(--text);
+}
 
-        .header {
-            text-align: center; padding: 30px 20px;
-            background: linear-gradient(135deg, #1c1c1e, #007aff);
-            border-radius: 24px; margin-bottom: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .header h1 { margin: 0; font-size: 26px; font-weight: 800; }
-        .header p { margin: 5px 0 0 0; font-size: 12px; opacity: 0.6; }
+.container{
+width:100%;
+max-width:420px;
+display:flex;
+flex-direction:column;
+gap:18px;
+}
 
-        .card {
-            background: var(--card);
-            backdrop-filter: blur(20px);
-            border-radius: 22px;
-            padding: 22px;
-            margin-bottom: 18px;
-            border: none;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-        }
+.header{
+text-align:center;
+padding:25px;
+border-radius:24px;
+background:linear-gradient(135deg,#1c1c1e,#007aff);
+}
 
-        h2 { font-size: 14px; margin: 0 0 15px 0; color: #8e8e93; display: flex; align-items: center; }
-        h2::before { content: ''; width: 3px; height: 14px; background: var(--blue); margin-right: 10px; border-radius: 2px; }
+.card{
+background:var(--card);
+backdrop-filter:blur(20px);
+border-radius:22px;
+padding:18px;
+display:flex;
+flex-direction:column;
+gap:10px;
+}
 
-        .color-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .color-btn {
-            background: rgba(255,255,255,0.08); border: none; padding: 12px;
-            border-radius: 12px; font-weight: 800; font-size: 12px;
-            cursor: pointer; color: #fff;
-        }
+h3{
+margin:0;
+font-size:14px;
+color:#8e8e93;
+}
 
-        input {
-            width: 100%; padding: 16px; margin-bottom: 12px;
-            border-radius: 16px; border: none; font-size: 14px;
-            background: rgba(255,255,255,0.06); color: white; outline: none;
-        }
+/* INPUT */
+input{
+width:100%;
+padding:14px;
+border-radius:14px;
+border:none;
+outline:none;
+background:rgba(255,255,255,0.08);
+color:#fff;
+box-sizing:border-box;
+}
 
-        .btn {
-            width: 100%; padding: 18px; background: var(--blue);
-            color: white; border: none; border-radius: 16px;
-            font-size: 15px; font-weight: 700; cursor: pointer;
-        }
+/* BUTTON */
+button{
+width:100%;
+padding:14px;
+border-radius:14px;
+border:none;
+background:var(--blue);
+color:#fff;
+font-weight:bold;
+}
 
-        .terminal {
-            background: #000; border-radius: 16px; padding: 16px;
-            margin-top: 12px; min-height: 55px;
-            font-family: 'SF Mono', monospace; font-size: 11px; color: #a1a1a6;
-            word-break: break-all;
-        }
+/* TERMINAL */
+.terminal{
+height:120px;
+border-radius:14px;
+overflow:hidden;
+background:#000;
+}
 
-        .log-ok { color: var(--green); }
-        .log-err { color: var(--red); }
-        .log-wait { color: #636366; font-style: italic; }
+iframe{
+width:100%;
+height:100%;
+border:none;
+}
 
-        .toast {
-            position: fixed; bottom: 30px; background: #fff; color: #000;
-            padding: 10px 20px; border-radius: 40px; display: none; font-size: 13px; font-weight: 700;
-        }
-    </style>
+/* STATUS */
+.status{
+font-size:12px;
+margin-top:5px;
+}
+.ok{color:var(--green);}
+.err{color:var(--red);}
+
+/* COLOR GRID */
+.color-grid{
+display:grid;
+grid-template-columns:repeat(3,1fr);
+gap:10px;
+}
+
+.color-btn{
+background:linear-gradient(135deg,#007aff,#0051c7);
+padding:12px;
+border-radius:14px;
+display:flex;
+flex-direction:column;
+align-items:center;
+justify-content:center;
+gap:4px;
+cursor:pointer;
+transition:0.2s;
+}
+
+.color-btn:active{
+transform:scale(0.95);
+}
+
+.c-name{
+font-size:11px;
+opacity:0.8;
+}
+
+.c-code{
+font-size:13px;
+font-weight:bold;
+}
+</style>
 </head>
+
 <body>
 
-    <div id="toast" class="toast">Copied!</div>
+<div class="container">
 
-    <div class="container">
-        <div class="header">
-            <h1>CKRPRO BIO</h1>
-            <p>100% Fixed Connection Engine</p>
-        </div>
+<div class="header">
+<h2>CKRPRO BIO ULTRA</h2>
+</div>
 
-        <div class="card">
-            <h2>Color Codes</h2>
-            <div class="color-grid">
-                <div class="color-btn" onclick="copy('[FFFF00]')" style="color:#FFD700;">[FFFF00]</div>
-                <div class="color-btn" onclick="copy('[FF0000]')" style="color:#FF453A;">[FF0000]</div>
-                <div class="color-btn" onclick="copy('[00FF00]')" style="color:#32D74B;">[00FF00]</div>
-                <div class="color-btn" onclick="copy('[0000FF]')" style="color:#0A84FF;">[0000FF]</div>
-                <div class="color-btn" onclick="copy('[FF00FF]')" style="color:#BF5AF2;">[FF00FF]</div>
-                <div class="color-btn" onclick="copy('[b][c]')" style="color:#8E8E93;">[b][c]</div>
-            </div>
-        </div>
+<!-- COLOR -->
+<div class="card">
+<h3>Color Codes</h3>
 
-        <div class="card">
-            <h2>1. Get JWT Token</h2>
-            <input type="text" id="acc" placeholder="Paste Access Token">
-            <button class="btn" onclick="getJWT()">Generate JWT</button>
-            <div class="terminal" id="t1"><div class="log-wait">> Ready...</div></div>
-        </div>
+<div class="color-grid">
 
-        <div class="card">
-            <h2>2. Apply Bio</h2>
-            <input type="text" id="jBio" placeholder="Bio Text (e.g. [FFFF00]CKRPRO)">
-            <input type="text" id="jToken" placeholder="JWT (Auto-filled)">
-            <button class="btn" onclick="bioJWT()">Update Now</button>
-            <div class="terminal" id="t3"><div class="log-wait">> Waiting for JWT...</div></div>
-        </div>
-    </div>
+<div class="color-btn" onclick="copy('[FFFF00]')">
+<span class="c-name">Yellow</span>
+<span class="c-code">[FFFF00]</span>
+</div>
 
-    <script>
-        function copy(txt) {
-            navigator.clipboard.writeText(txt);
-            const toast = document.getElementById('toast');
-            toast.style.display = 'block';
-            setTimeout(() => toast.style.display = 'none', 1500);
-        }
+<div class="color-btn" onclick="copy('[FF0000]')">
+<span class="c-name">Red</span>
+<span class="c-code">[FF0000]</span>
+</div>
 
-        function log(id, msg, type) {
-            document.getElementById(id).innerHTML = `<div class="log-${type}">> ${msg}</div>`;
-        }
+<div class="color-btn" onclick="copy('[00FF00]')">
+<span class="c-name">Green</span>
+<span class="c-code">[00FF00]</span>
+</div>
 
-        // --- THE ULTIMATE FETCH ENGINE (SABAI FIXED) ---
-        async function smartFetch(url) {
-            // Priority 1: AllOrigins (Most Stable)
-            try {
-                const res = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
-                const data = await res.json();
-                if (data.contents) return data.contents;
-            } catch (e) { console.log("Proxy 1 Failed"); }
+<div class="color-btn" onclick="copy('[0000FF]')">
+<span class="c-name">Blue</span>
+<span class="c-code">[0000FF]</span>
+</div>
 
-            // Priority 2: CorsProxy.io
-            try {
-                const res = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
-                const text = await res.text();
-                if (text && !text.includes("error")) return text;
-            } catch (e) { console.log("Proxy 2 Failed"); }
+<div class="color-btn" onclick="copy('[FF00FF]')">
+<span class="c-name">Magenta</span>
+<span class="c-code">[FF00FF]</span>
+</div>
 
-            // Priority 3: Direct Fetch (Sometimes works on local)
-            try {
-                const res = await fetch(url);
-                return await res.text();
-            } catch (e) { console.log("Direct Failed"); }
+<div class="color-btn" onclick="copy('[b][c]')">
+<span class="c-name">Bold + Color</span>
+<span class="c-code">[b][c]</span>
+</div>
 
-            throw new Error("SABAI CONNECTION FAILED");
-        }
+</div>
+</div>
 
-        async function getJWT() {
-            const token = document.getElementById('acc').value.trim();
-            if(!token) return log('t1', 'Error: Token missing!', 'err');
-            log('t1', 'Waking up API (10-15s)...', 'wait');
-            
-            try {
-                const target = `https://access-token-to-jwt-token.onrender.com/rizer?access_token=${token}`;
-                const result = await smartFetch(target);
-                const data = JSON.parse(result);
-                if(data.success) {
-                    log('t1', 'JWT Created Successfully!', 'ok');
-                    document.getElementById('jToken').value = data.jwt;
-                } else { log('t1', 'Failed: ' + (data.error || 'Invalid Token'), 'err'); }
-            } catch (e) { log('t1', 'Connection Failed! Try once more.', 'err'); }
-        }
+<!-- JWT -->
+<div class="card">
+<h3>Generate JWT</h3>
+<input id="acc" placeholder="Access Token">
+<button id="btn1" onclick="getJWT()">Generate JWT</button>
 
-        async function bioJWT() {
-            const bio = document.getElementById('jBio').value;
-            const jwt = document.getElementById('jToken').value.trim();
-            if(!jwt) return log('t3', 'Error: Paste JWT first!', 'err');
-            log('t3', 'Updating Bio... Please wait.', 'wait');
+<div class="terminal">
+<iframe id="frame1"></iframe>
+</div>
 
-            try {
-                // Bio API ko correct link with proper encoding
-                const target = `https://long-bio-api.onrender.com/bio_upload?bio=${encodeURIComponent(bio)}&jwt=${jwt}`;
-                const result = await smartFetch(target);
-                
-                // Response check
-                if(result.includes("Success") || result.includes("Updated")) {
-                    log('t3', 'SUCCESS: Bio Changed!', 'ok');
-                } else {
-                    log('t3', result || 'Connection OK (Check Game)', 'ok');
-                }
-            } catch (e) { 
-                log('t3', 'FAILED: Server down or JWT expired.', 'err'); 
-            }
-        }
-    </script>
+<div id="status1" class="status"></div>
+</div>
+
+<!-- BIO -->
+<div class="card">
+<h3>Apply Bio</h3>
+<input id="bio" placeholder="Enter Bio">
+<input id="jwt" placeholder="JWT auto-filled" readonly>
+
+<button id="btn2" onclick="setBio()">Update Bio</button>
+
+<div class="terminal">
+<iframe id="frame2"></iframe>
+</div>
+
+<div id="status2" class="status"></div>
+</div>
+
+</div>
+
+<script>
+
+/* COPY */
+function copy(txt){
+navigator.clipboard.writeText(txt);
+showToast("Copied: "+txt);
+}
+
+/* TOAST */
+function showToast(msg){
+let t=document.createElement("div");
+t.innerText=msg;
+t.style.position="fixed";
+t.style.bottom="30px";
+t.style.left="50%";
+t.style.transform="translateX(-50%)";
+t.style.background="#fff";
+t.style.color="#000";
+t.style.padding="8px 18px";
+t.style.borderRadius="20px";
+t.style.fontSize="12px";
+document.body.appendChild(t);
+setTimeout(()=>t.remove(),1500);
+}
+
+/* WAIT */
+function wait(ms){return new Promise(r=>setTimeout(r,ms));}
+
+/* FETCH */
+async function smartFetch(url){
+
+try{
+let r=await fetch("https://api.allorigins.win/get?url="+encodeURIComponent(url));
+let j=await r.json();
+if(j.contents) return j.contents;
+}catch(e){}
+
+try{
+let r=await fetch("https://corsproxy.io/?"+encodeURIComponent(url));
+let t=await r.text();
+if(t) return t;
+}catch(e){}
+
+try{
+let r=await fetch(url);
+return await r.text();
+}catch(e){}
+
+throw "fail";
+}
+
+/* JWT EXTRACT */
+function extractJWT(text){
+try{
+let j=JSON.parse(text);
+if(j.jwt) return j.jwt;
+}catch(e){}
+
+let m=text.match(/[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+/);
+return m?m[0]:null;
+}
+
+/* GET JWT */
+async function getJWT(){
+
+let token=document.getElementById("acc").value.trim();
+let btn=document.getElementById("btn1");
+let frame=document.getElementById("frame1");
+let jwt=document.getElementById("jwt");
+let status=document.getElementById("status1");
+
+if(!token){
+status.innerHTML='<span class="err">Enter Token</span>';
+return;
+}
+
+btn.innerText="Generating...";
+btn.disabled=true;
+status.innerText="⏳ Processing...";
+
+frame.src=`https://access-token-to-jwt-token.onrender.com/rizer?access_token=${token}`;
+
+try{
+
+await wait(3000);
+
+let res=await smartFetch(frame.src);
+
+if(!res || res.length<20){
+await wait(3000);
+res=await smartFetch(frame.src);
+}
+
+let j=extractJWT(res);
+
+if(j){
+jwt.value=j;
+status.innerHTML='<span class="ok">JWT SUCCESS ✔</span>';
+}else{
+status.innerHTML='<span class="err">JWT NOT FOUND</span>';
+}
+
+}catch(e){
+status.innerHTML='<span class="err">Connection Failed</span>';
+}
+
+btn.innerText="Generate JWT";
+btn.disabled=false;
+}
+
+/* BIO */
+function setBio(){
+
+let bio=document.getElementById("bio").value.trim();
+let jwt=document.getElementById("jwt").value.trim();
+let btn=document.getElementById("btn2");
+let frame=document.getElementById("frame2");
+let status=document.getElementById("status2");
+
+if(!jwt){
+status.innerHTML='<span class="err">JWT Missing</span>';
+return;
+}
+
+btn.innerText="Updating...";
+btn.disabled=true;
+
+frame.src=`https://long-bio-api.onrender.com/bio_upload?bio=${encodeURIComponent(bio)}&jwt=${jwt}`;
+
+setTimeout(()=>{
+status.innerHTML='<span class="ok">Request Sent ✔</span>';
+btn.innerText="Update Bio";
+btn.disabled=false;
+},2000);
+}
+
+</script>
+
 </body>
 </html>
