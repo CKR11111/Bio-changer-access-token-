@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CKRPRO BIO PRO MAX FIXED</title>
+<style>
+*{box-sizing:border-box;}
+body{
+  margin:0;
+  background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  font-family:-apple-system,sans-serif;
+  display:flex;
+  justify-content:center;
+  padding:10px;
+  color:#fff;
+}
+.container{
+  max-width:420px;
+  width:100%;
+  display:flex;
+  flex-direction:column;
+}
+
+/* Card */
+.card{
+  width:100%;
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(20px);
+  padding:18px;
+  border-radius:20px;
+  margin-bottom:15px;
+  display:flex;
+  flex-direction:column;
+  box-shadow:0 8px 30px rgba(0,0,0,0.5);
+}
+
+/* Titles */
+h3{
+  margin:0 0 8px 0;
+  font-size:14px;
+  color:#fff;
+}
+
+/* Inputs */
+input,button{
+  width:100%;
+  padding:14px;
+  border-radius:12px;
+  border:none;
+  margin-top:8px;
+  font-size:14px;
+  outline:none;
+}
+
+input{
+  background:rgba(255,255,255,0.07);
+  color:#fff;
+}
+
+/* Buttons */
+button{
+  background:#007aff;
+  color:#fff;
+  font-weight:bold;
+  cursor:pointer;
+  transition:0.3s;
+}
+button:hover{
+  background:#00e0ff;
+}
+
+/* iframe terminal */
+.terminal{
+  width:100%;
+  height:140px;
+  border-radius:12px;
+  background:#000;
+  margin-top:10px;
+  padding:10px;
+  font-family:'SF Mono', monospace;
+  font-size:12px;
+  overflow-y:auto;
+  color:#a1a1a6;
+  word-break:break-word;
+}
+
+/* Colors grid */
+.color-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:8px;
+  margin-top:5px;
+}
+
+.color-btn{
+  background:rgba(0,122,255,0.2);
+  padding:10px;
+  border-radius:12px;
+  text-align:center;
+  font-size:12px;
+  cursor:pointer;
+  color:#fff;
+  word-break:break-word;
+  transition:0.2s;
+}
+.color-btn:hover{
+  background:rgba(0,122,255,0.5);
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- COLOR CODES -->
+<div class="card">
+<h3>Color Codes</h3>
+<div class="color-grid">
+<div class="color-btn" onclick="copy('[FFFF00]')">Yellow [FFFF00]</div>
+<div class="color-btn" onclick="copy('[FF0000]')">Red [FF0000]</div>
+<div class="color-btn" onclick="copy('[00FF00]')">Green [00FF00]</div>
+<div class="color-btn" onclick="copy('[0000FF]')">Blue [0000FF]</div>
+<div class="color-btn" onclick="copy('[FF00FF]')">Magenta [FF00FF]</div>
+<div class="color-btn" onclick="copy('[b][c]')">Bold [b][c]</div>
+</div>
+</div>
+
+<!-- JWT -->
+<div class="card">
+<h3>Generate JWT</h3>
+<input id="acc" placeholder="Enter Access Token">
+<button onclick="getJWT()">Generate JWT</button>
+<div id="terminal-jwt" class="terminal">Waiting for input...</div>
+<input id="jwt" placeholder="JWT will auto-fill if allowed">
+</div>
+
+<!-- BIO -->
+<div class="card">
+<h3>Apply Bio</h3>
+<input id="bio" placeholder="Enter Bio">
+<button onclick="setBio()">Update Bio</button>
+<div id="terminal-bio" class="terminal">Waiting for JWT...</div>
+</div>
+
+</div>
+
+<script>
+function copy(t){
+  navigator.clipboard.writeText(t);
+  alert("Copied: "+t);
+}
+
+function log(id,msg,type){
+  let t=document.getElementById(id);
+  t.innerHTML+=`<div class="${type}">> ${msg}</div>`;
+  t.scrollTop=t.scrollHeight;
+}
+
+function extractJWT(text){
+  let m=text.match(/[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+\.[A-Za-z0-9-_]+/);
+  return m?m[0]:null;
+}
+
+async function getJWT(){
+  let token=document.getElementById("acc").value;
+  if(!token){alert("Enter token"); return;}
+  let term=document.getElementById("terminal-jwt");
+  log("terminal-jwt","Sending request...","wait");
+  try{
+    let res=await fetch(`/get_jwt?token=${token}`);
+    let text=await res.text();
+    log("terminal-jwt","Response received","ok");
+    let jwt=extractJWT(text);
+    if(jwt){
+      document.getElementById("jwt").value=jwt;
+      log("terminal-jwt","JWT auto-filled ✅","ok");
+    }else{
+      log("terminal-jwt","JWT not found ❌","err");
+    }
+  }catch(e){
+    log("terminal-jwt","Connection failed ❌","err");
+  }
+}
+
+async function setBio(){
+  let bio=document.getElementById("bio").value;
+  let jwt=document.getElementById("jwt").value;
+  if(!jwt){alert("Paste JWT manually"); return;}
+  let term=document.getElementById("terminal-bio");
+  log("terminal-bio","Sending request...","wait");
+  try{
+    let res=await fetch(`/set_bio?bio=${encodeURIComponent(bio)}&jwt=${jwt}`);
+    let text=await res.text();
+    log("terminal-bio","Response: "+text,"ok");
+  }catch(e){
+    log("terminal-bio","Connection failed ❌","err");
+  }
+}
+</script>
+
+</body>
+</html>
